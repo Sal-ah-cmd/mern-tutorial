@@ -13,32 +13,27 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 const __dirname = path.resolve();
 
-let allowedOrigins = ["http://localhost:5173", "http://localhost:3000"]; 
-
-if (process.env.NODE_ENV === "production") {
-    if (process.env.FRONTEND_URL) {
-        allowedOrigins.push(process.env.FRONTEND_URL);
-        allowedOrigins.push(process.env.FRONTEND_URL + '/');
-    }
-}
+// CORS Configuration
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    process.env.FRONTEND_URL, 
+    process.env.FRONTEND_URL + '/' 
+];
 
 const corsOptions = {
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'), false);
-        }
-    },
+    origin: allowedOrigins,
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); 
-app.use(express.json()); // this middleware will parse JSON bodies: req.body
+
+app.use(express.json()); 
 app.use(rateLimiter);
+
 app.use("/api/notes", notesRoutes);
 
 if (process.env.NODE_ENV === "production") {
