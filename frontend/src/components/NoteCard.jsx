@@ -36,7 +36,8 @@ const NoteCard = ({ note, setNotes }) => {
 
   return (
     <div className="card w-full bg-base-100 shadow-xl border border-primary/20 hover:border-primary/50 transition-all duration-200 cursor-pointer">
-      <Link to={`/note/${note._id}`} className="card-body p-6">
+      
+      <div className="card-body p-6">
         <h2 className="card-title text-primary text-xl truncate mb-2">{note.title}</h2>
         
         <p className="text-sm text-base-content/60 font-medium">
@@ -48,11 +49,11 @@ const NoteCard = ({ note, setNotes }) => {
         </p>
         
         <p className="text-base-content text-md whitespace-pre-line line-clamp-4">{note.content}</p>
-      </Link>
+      </div>
       
       {isOwner && (
         <div className="card-actions justify-end p-4 border-t border-base-content/10">
-          <Link to={`/note/${note._id}/edit`} className="btn btn-sm btn-outline btn-info">
+          <Link to={`/note/${note._id}`} className="btn btn-sm btn-outline btn-info">
             <Edit2Icon className="size-4" />
           </Link>
           <button onClick={handleDelete} className="btn btn-sm btn-outline btn-error">
